@@ -64,13 +64,16 @@ def get_google_trends():
 
 	# pytrends = TrendReq(proxies="{'http': 'http://192.168.0.1:8887'}")
 
-	start_date = datetime.strptime('2014-01-06T00', '%Y-%m-%dT%H')
+	start_date = datetime.strptime('2015-01-06T00', '%Y-%m-%dT%H')
 	end_date = datetime.strptime('2015-01-13T23', '%Y-%m-%dT%H')
 	
 	delta = timedelta(days=7)
 	time_now = datetime.now()
 
 	df = pd.DataFrame()
+	pytrends = TrendReq( hl='en-US', tz=360, geo='')#, proxies={ 'http': 'http://104.131.72.47:3128' })
+
+	writer = pd.ExcelWriter("CryptoGoogleTrends.xlsx",  engine='xlsxwriter')
 
 	while True:
 		
@@ -82,8 +85,9 @@ def get_google_trends():
 		end_date_str = end_date.strftime('%Y-%m-%dT%H')
 		tf = start_date_str + ' ' + end_date_str
 		try:
-			pytrends = TrendReq( hl='en-US', tz=360, geo='', proxies={ 'https': 'https://207.154.240.229:3128' })
-			pytrends.build_payload(kw_list=["Bitcoin", "Ethereum", "Ripple", "Buy Bitcoin", "How to buy Bitcoin"], timeframe=tf)
+			print('entered try')
+			pytrends.build_payload(kw_list=["Bitcoin", "Ethereum", "Ripple", "Buy Bitcoin", "Coinbase"], timeframe=tf)
+			print('built payload')
 			interest_over_time_df = pytrends.interest_over_time()
 			print(interest_over_time_df.head())
 			df = df.append(interest_over_time_df)
@@ -94,11 +98,13 @@ def get_google_trends():
 		
 		start_date += delta
 		end_date += delta 
-		
-		time.sleep(60)
+		print('sleeping')
+		#time.sleep(60)
+		print('finished sleeping')
+		df.to_excel(writer)
+		print('wrote to excel')
 
-	writer = pd.ExcelWriter("CryptoGoogleTrends.xlsx",  engine='xlsxwriter')
-	df.to_excel(writer)
+	
 	writer.save()
 
 get_google_trends()
