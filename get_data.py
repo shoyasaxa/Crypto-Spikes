@@ -66,12 +66,13 @@ def get_google_trends():
 
 	start_date = datetime.strptime('2015-01-06T00', '%Y-%m-%dT%H')
 	end_date = datetime.strptime('2015-01-13T23', '%Y-%m-%dT%H')
-	
-	delta = timedelta(days=7)
+	#start_date = datetime.strptime('2017-12-12T00', '%Y-%m-%dT%H')
+	#end_date = datetime.strptime('2017-12-19T23', '%Y-%m-%dT%H')
+	delta = timedelta(days=8)
 	time_now = datetime.now()
 
 	df = pd.DataFrame()
-	pytrends = TrendReq( hl='en-US', tz=360, geo='')#, proxies={ 'http': 'http://104.131.72.47:3128' })
+	pytrends = TrendReq( hl='en-US', tz=0, geo='', proxies={ 'https': 'https://52.87.245.237:3128' })
 
 	writer = pd.ExcelWriter("CryptoGoogleTrends.xlsx",  engine='xlsxwriter')
 
@@ -86,23 +87,22 @@ def get_google_trends():
 		tf = start_date_str + ' ' + end_date_str
 		try:
 			print('entered try')
-			pytrends.build_payload(kw_list=["Bitcoin", "Ethereum", "Ripple", "Buy Bitcoin", "Coinbase"], timeframe=tf)
+			pytrends.build_payload(kw_list=["Bitcoin", "Ethereum", "Bitstamp", "Buy Bitcoin", "Coinbase"], timeframe=tf)
 			print('built payload')
 			interest_over_time_df = pytrends.interest_over_time()
 			print(interest_over_time_df.head())
+			print(interest_over_time_df.tail())
 			df = df.append(interest_over_time_df)
 			print("not exception")
+			
+			start_date += delta
+			end_date += delta 
+			df.to_excel(writer)
 		except Exception as e:
 			print(e)
 			pass
 		
-		start_date += delta
-		end_date += delta 
-		print('sleeping')
-		#time.sleep(60)
-		print('finished sleeping')
-		df.to_excel(writer)
-		print('wrote to excel')
+		print('exited try/except')
 
 	
 	writer.save()
