@@ -107,4 +107,19 @@ def get_google_trends():
 	
 	writer.save()
 
-get_google_trends()
+
+def get_google_trend_historical(keyword):
+	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
+	tf = '2015-01-04 2018-05-01'
+	try:
+		print('entered try')
+		pytrends.build_payload(kw_list=[keyword], timeframe=tf)
+		interest_over_time_df = pytrends.interest_over_time()
+		print(interest_over_time_df.head())
+		writer = pd.ExcelWriter("CryptoGoogleTrendsHistoricalDaily_"+keyword+".xlsx",  engine='xlsxwriter')
+		interest_over_time_df.to_excel(writer)
+		writer.save()
+	except Exception as e:
+		print(e)
+
+get_google_trend_historical('Bitcoin')
