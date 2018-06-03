@@ -68,17 +68,18 @@ def get_google_trends():
 	end_date = datetime.strptime('2015-01-13T23', '%Y-%m-%dT%H')
 	#start_date = datetime.strptime('2017-12-12T00', '%Y-%m-%dT%H')
 	#end_date = datetime.strptime('2017-12-19T23', '%Y-%m-%dT%H')
-	delta = timedelta(days=8)
+	
+	# to make an overlap 
+	delta = timedelta(days=7)
 	time_now = datetime.now()
 
 	df = pd.DataFrame()
-	pytrends = TrendReq( hl='en-US', tz=0, geo='', proxies={ 'https': 'https://52.87.245.237:3128' })
+	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
 
 	writer = pd.ExcelWriter("CryptoGoogleTrends.xlsx",  engine='xlsxwriter')
 
 	while True:
 		
-
 		if (end_date > time_now):
 			break
 
@@ -86,14 +87,14 @@ def get_google_trends():
 		end_date_str = end_date.strftime('%Y-%m-%dT%H')
 		tf = start_date_str + ' ' + end_date_str
 		try:
-			print('entered try')
-			pytrends.build_payload(kw_list=["Bitcoin", "Ethereum", "Bitstamp", "Buy Bitcoin", "Coinbase"], timeframe=tf)
-			print('built payload')
+			#print('entered try')
+			pytrends.build_payload(kw_list=["Bitcoin"], timeframe=tf)
+			#print('built payload')
 			interest_over_time_df = pytrends.interest_over_time()
-			print(interest_over_time_df.head())
-			print(interest_over_time_df.tail())
+			#print(interest_over_time_df.head())
+			#print(interest_over_time_df.tail())
 			df = df.append(interest_over_time_df)
-			print("not exception")
+			#print("not exception")
 			
 			start_date += delta
 			end_date += delta 
@@ -102,11 +103,12 @@ def get_google_trends():
 			print(e)
 			pass
 		
-		print('exited try/except')
+		#print('exited try/except')
 
 	
 	writer.save()
 
+get_google_trends()
 
 def get_google_trend_historical(keyword):
 	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
@@ -122,4 +124,13 @@ def get_google_trend_historical(keyword):
 	except Exception as e:
 		print(e)
 
-get_google_trend_historical('Bitcoin')
+#get_google_trend_historical('Bitcoin')
+
+def get_google_trend_v2():
+	pytrends = TrendReq( hl='en-US', tz=0, geo='')
+	interest_over_time_df = pytrends.get_historical_interest(['Bitcoin'], year_start=2015, month_start=1, day_start=1, hour_start=0, year_end=2018, month_end=5, day_end=15, hour_end=0, cat=0, geo='', gprop='', sleep=0)
+	writer = pd.ExcelWriter("CryptoGoogleTrends_with_overlap.xlsx",  engine='xlsxwriter')
+	interest_over_time_df.to_excel(writer)
+	writer.save()
+
+#get_google_trend_v2()
