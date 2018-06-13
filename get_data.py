@@ -60,17 +60,15 @@ def get_ripple_data():
 #get_ripple_data()
 
 def get_google_trends():
-	keywords = ["Bitcoin, Ethereum, Ripple"] 
-
 	# pytrends = TrendReq(proxies="{'http': 'http://192.168.0.1:8887'}")
-
+	print('getting data...')
 	start_date = datetime.strptime('2015-01-06T00', '%Y-%m-%dT%H')
 	end_date = datetime.strptime('2015-01-13T23', '%Y-%m-%dT%H')
 	#start_date = datetime.strptime('2017-12-12T00', '%Y-%m-%dT%H')
 	#end_date = datetime.strptime('2017-12-19T23', '%Y-%m-%dT%H')
 	
 	# to make an overlap 
-	delta = timedelta(days=7)
+	delta = timedelta(days=7, hours=23)
 	time_now = datetime.now()
 
 	df = pd.DataFrame()
@@ -101,7 +99,7 @@ def get_google_trends():
 			df.to_excel(writer)
 		except Exception as e:
 			print(e)
-			pass
+			df = df.append(pd.Series([Nan, Nan, Nan], index=['date', 'Bitcoin', 'isPartial'] ) )
 		
 		#print('exited try/except')
 
