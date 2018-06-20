@@ -106,7 +106,7 @@ def get_google_trends():
 	
 	writer.save()
 
-get_google_trends()
+#get_google_trends()
 
 def get_google_trend_historical(keyword):
 	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
@@ -132,3 +132,20 @@ def get_google_trend_v2():
 	writer.save()
 
 #get_google_trend_v2()
+
+
+def test_tz_param():
+	print('testing tz...')
+	pytrends = TrendReq(hl='en-US', tz=0, geo='')
+	interest_over_time_df = pytrends.get_historical_interest(['Bitcoin'], year_start=2018, month_start=1, day_start=1, hour_start=0, year_end=2018, month_end=2, day_end=15, hour_end=0, cat=0, geo='', gprop='', sleep=0)
+	writer = pd.ExcelWriter("test.xlsx",  engine='xlsxwriter')
+	interest_over_time_df.to_excel(writer)
+	writer.save()
+
+	pytrends2 = TrendReq(hl='en-US', tz=360, geo='')
+	interest_over_time_df_2 = pytrends2.get_historical_interest(['Bitcoin'], year_start=2018, month_start=1, day_start=1, hour_start=0, year_end=2018, month_end=2, day_end=15, hour_end=0, cat=0, geo='', gprop='', sleep=0)
+	writer2 = pd.ExcelWriter("test2.xlsx",  engine='xlsxwriter')
+	interest_over_time_df_2.to_excel(writer2)
+	writer2.save()
+
+test_tz_param()
