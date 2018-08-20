@@ -74,7 +74,7 @@ def get_google_trends():
 	df = pd.DataFrame()
 	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
 
-	writer = pd.ExcelWriter("CryptoGoogleTrends.xlsx",  engine='xlsxwriter')
+	writer = pd.ExcelWriter("CryptoGoogleTrends_updated_8_20.xlsx",  engine='xlsxwriter')
 
 	while True:
 		
@@ -85,12 +85,12 @@ def get_google_trends():
 		end_date_str = end_date.strftime('%Y-%m-%dT%H')
 		tf = start_date_str + ' ' + end_date_str
 		try:
-			#print('entered try')
+			print('entered try')
 			pytrends.build_payload(kw_list=["Bitcoin"], timeframe=tf)
-			#print('built payload')
+			print('built payload')
 			interest_over_time_df = pytrends.interest_over_time()
-			#print(interest_over_time_df.head())
-			#print(interest_over_time_df.tail())
+			print(interest_over_time_df.head(2))
+			print(interest_over_time_df.tail(2))
 			df = df.append(interest_over_time_df)
 			#print("not exception")
 			
@@ -99,14 +99,14 @@ def get_google_trends():
 			df.to_excel(writer)
 		except Exception as e:
 			print(e)
-			df = df.append(pd.Series([Nan, Nan, Nan], index=['date', 'Bitcoin', 'isPartial'] ) )
+			#df = df.append(pd.Series([None, None, None], index=['date', 'Bitcoin', 'isPartial'] ) )
 		
 		#print('exited try/except')
 
 	
 	writer.save()
 
-#get_google_trends()
+get_google_trends()
 
 def get_google_trend_historical(keyword):
 	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
@@ -148,4 +148,4 @@ def test_tz_param():
 	interest_over_time_df_2.to_excel(writer2)
 	writer2.save()
 
-test_tz_param()
+#test_tz_param()
