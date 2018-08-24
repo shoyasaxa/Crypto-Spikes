@@ -59,9 +59,9 @@ def get_ripple_data():
 
 #get_ripple_data()
 
-def get_google_trends():
+def get_google_trends(keyword):
 	# pytrends = TrendReq(proxies="{'http': 'http://192.168.0.1:8887'}")
-	print('getting data...')
+	print('getting data for ' + keyword)
 	start_date = datetime.strptime('2015-01-06T00', '%Y-%m-%dT%H')
 	end_date = datetime.strptime('2015-01-13T23', '%Y-%m-%dT%H')
 	#start_date = datetime.strptime('2017-12-12T00', '%Y-%m-%dT%H')
@@ -74,7 +74,7 @@ def get_google_trends():
 	df = pd.DataFrame()
 	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
 
-	writer = pd.ExcelWriter("CryptoGoogleTrends_updated_8_20.xlsx",  engine='xlsxwriter')
+	#writer = pd.ExcelWriter("CryptoGoogleTrends_updated_8_20.xlsx",  engine='xlsxwriter')
 
 	while True:
 		
@@ -85,28 +85,44 @@ def get_google_trends():
 		end_date_str = end_date.strftime('%Y-%m-%dT%H')
 		tf = start_date_str + ' ' + end_date_str
 		try:
-			print('entered try')
-			pytrends.build_payload(kw_list=["Bitcoin"], timeframe=tf)
-			print('built payload')
+			#print('entered try')
+			pytrends.build_payload(kw_list=[keyword], timeframe=tf)
+			#print('built payload')
 			interest_over_time_df = pytrends.interest_over_time()
-			print(interest_over_time_df.head(2))
-			print(interest_over_time_df.tail(2))
+			print(interest_over_time_df.head(1))
+			#print(interest_over_time_df.tail(2))
 			df = df.append(interest_over_time_df)
 			#print("not exception")
 			
-			start_date += delta
-			end_date += delta 
-			df.to_excel(writer)
+			#df.to_excel(writer)
 		except Exception as e:
 			print(e)
 			#df = df.append(pd.Series([None, None, None], index=['date', 'Bitcoin', 'isPartial'] ) )
-		
+		start_date += delta
+		end_date += delta 
+
 		#print('exited try/except')
 
+	return df 
+
+	#writer.save()
+
+#
+
+def get_google_trends_multi(keywords):
+	writer = pd.ExcelWriter("GoogleTrends_for_multiple_keywords_v2.xlsx",  engine='xlsxwriter')
+	df = get_google_trends(keywords[0])
+
+	for i in range(1,len(keywords)):
+		df[keywords[i]] = get_google_trends(keywords[i])[keywords[i]]
+		df.to_excel(writer)
 	
 	writer.save()
 
-get_google_trends()
+get_google_trends_multi(['Ethereum', 'Bubble', 'Cryptocurrency', 'Hashing', 'Blockchain'])
+
+
+
 
 def get_google_trend_historical(keyword):
 	pytrends = TrendReq( hl='en-US', tz=0, geo='') #, proxies={ 'https': 'https://52.87.245.237:3128' })
