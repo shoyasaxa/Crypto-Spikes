@@ -23,7 +23,7 @@ In this project, I
     * [analyze_data.ipynb] (https://github.com/shoyasaxa/Crypto-Spikes/blob/master/analyze_data.ipynb)
       * innovatively scaled Google Trends (Google Trends scale data in a very unhelpful way. For more information, please look into my paper).
   * Ran Structural Vector Autoregression to test for Granger Causality and graph impulse response functions between bitcoin prices and Google Trends 
-    * end analyze_data.ipynb and [Granger Causality Tests] (https://github.com/shoyasaxa/Crypto-Spikes/blob/master/More%20Granger%20Causality%20Tests.ipynb) 
+    * bottom of analyze_data.ipynb and [Granger Causality Tests] (https://github.com/shoyasaxa/Crypto-Spikes/blob/master/More%20Granger%20Causality%20Tests.ipynb) 
   * Built LSTM using Keras to predict price movement 
     * [Price Spike Classification with Keras and LSTM v3.ipynb] (https://github.com/shoyasaxa/Crypto-Spikes/blob/master/Price%20Spike%20Classification%20with%20Keras%20and%20LSTM%20v3.ipynb)
     
