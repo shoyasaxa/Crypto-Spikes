@@ -2,7 +2,7 @@
 
 ### Overview 
 
-* This repository contains all the work I did for the McDonough Summer Research Fellowship, in which I explored the quantitative relationship  between bitcoin prices and Google Trends. You can read the academic paper and the one-page summary on my linkedin profile [here](https://www.linkedin.com/in/shoya-yoshida/) 
+* This repository contains all the work I did for the McDonough Summer Research Fellowship, in which I explored the quantitative relationship  between bitcoin prices and Google Trends. You can read the academic paper [here](https://drive.google.com/file/d/1Nja38PLwkr3zZTMCLRbBYSsDRMbAxSz2/view?usp=sharing) and the one-page summary [here](https://drive.google.com/file/d/1fu-CGzrwRVKQhP2Vo2tjpKcgb5cCZJ5C/view?usp=sharing) 
 
 Below is the abstract from my paper
 * This research analyzes the relationship between Google Trends and bitcoin price with 
